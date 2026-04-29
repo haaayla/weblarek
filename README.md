@@ -1,4 +1,5 @@
 # Проектная работа "Веб-ларек"
+https://github.com/haaayla/weblarek
 
 Стек: HTML, SCSS, TS, Vite
 
@@ -98,3 +99,98 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
+## Данные
+В приложении используются следующие типы данных:
+
+### Интерфейс товара (IProduct)
+
+```ts
+interface IProduct {
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: number | null;
+}
+```
+Описывает товар, который отображается в каталоге и может быть добавлен в корзину.
+
+### Тип способа оплаты (TPayment)
+`type TPayment = 'card' | 'cash';`
+Определяет доступные способы оплаты.
+
+### Интерфейс покупателя (IBuyer)
+
+```ts
+interface IBuyer {
+  payment: TPayment;
+  email: string;
+  phone: string;
+  address: string;
+}
+```
+Описывает данные пользователя, необходимые для оформления заказа.
+
+## Модели данных
+
+### Класс Products
+Отвечает за хранение и управление каталогом товаров.
+
+Поля класса:
+`items: IProduct[]` — массив всех товаров
+`selectedItem: IProduct | null` — выбранный товар для просмотра
+
+Методы класса:
+`setItems(items: IProduct[]): void` — сохраняет список товаров
+`getItems(): IProduct[]` — возвращает список товаров
+`getItem(id: string): IProduct | undefined` — возвращает товар по id
+`setSelectedItem(item: IProduct): void` — сохраняет выбранный товар
+`getSelectedItem(): IProduct | null` — возвращает выбранный товар
+
+### Класс Cart
+Отвечает за хранение и управление товарами в корзине.
+
+Поля класса:
+`items: IProduct[]` — массив товаров в корзине
+
+Методы класса:
+`getItems(): IProduct[]` — возвращает товары в корзине
+`addItem(item: IProduct): void` — добавляет товар в корзину
+`removeItem(id: string): void` — удаляет товар из корзины
+`clear(): void` — очищает корзину
+`getTotalPrice(): number` — возвращает общую стоимость товаров
+`getCount(): number` — возвращает количество товаров
+`hasItem(id: string): boolean` — проверяет наличие товара в корзине
+
+### Класс Buyer
+Отвечает за хранение и валидацию данных покупателя.
+
+Поля класса:
+`payment: TPayment | null` — выбранный способ оплаты
+`email: string` — email пользователя
+`phone: string` — телефон пользователя
+`address: string` — адрес доставки
+
+Методы класса:
+`setData(data: Partial<IBuyer>): void` — обновляет данные покупателя
+`getData(): IBuyer` — возвращает данные покупателя
+`clear(): void` — очищает данные
+`validate(): Partial<Record<keyof IBuyer, string>>` — проверяет валидность данных и возвращает ошибки
+
+## Слой коммуникации
+
+### Класс WebLarekApi
+Отвечает за взаимодействие приложения с сервером.
+
+Использует композицию — принимает экземпляр класса Api и вызывает его методы для выполнения HTTP-запросов.
+
+Конструктор:
+`constructor(api: IApi)` — принимает объект, реализующий интерфейс IApi, через который выполняются запросы к серверу.
+
+Поля класса:
+`api: IApi` — экземпляр класса для выполнения HTTP-запросов.
+
+Методы класса:
+`getProducts(): Promise<IProductResponse>`  
+Выполняет GET-запрос на эндпоинт `/product/` и возвращает объект с массивом товаров.
