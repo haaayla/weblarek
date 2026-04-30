@@ -1,9 +1,10 @@
 import './scss/styles.scss';
-import { Products } from "./components/base/models/Products";
-import { Cart } from "./components/base/models/Cart";
-import { Buyer } from "./components/base/models/Buyer";
+import { Products } from "./components/models/Products";
+import { Cart } from "./components/models/Cart";
+import { Buyer } from "./components/models/Buyer";
 import { Api } from "./components/base/Api";
-import { WebLarekApi } from "./components/base/models/WebLarekApi";
+import { apiProducts } from "./utils/data";
+import { WebLarekApi } from "./components/models/WebLarekApi";
 import { API_URL } from "./utils/constants";
 
 const products = new Products();
@@ -15,20 +16,11 @@ const webLarekApi = new WebLarekApi(baseApi);
 // Тест Products
 console.log('--- PRODUCTS ---');
 
-products.setItems([
-  {
-    id: '1',
-    title: 'Test product',
-    description: '',
-    image: '',
-    category: '',
-    price: 100
-  }
-]);
+products.setItems(apiProducts.items);
 
 console.log('ALL PRODUCTS:', products.getItems());
 
-const first = products.getItem('1');
+const first = products.getItems()[0];
 console.log('ONE PRODUCT:', first);
 
 if (first) {
@@ -37,35 +29,23 @@ if (first) {
 
 console.log('SELECTED:', products.getSelectedItem());
 
+
+// Тест Cart
 console.log('--- CART ---');
 
-cart.addItem({
-  id: '1',
-  title: 'Test product',
-  description: '',
-  image: '',
-  category: '',
-  price: 100
-});
-
-cart.addItem({
-  id: '2',
-  title: 'Second product',
-  description: '',
-  image: '',
-  category: '',
-  price: 200
-});
+cart.addItem(apiProducts.items[0]);
+cart.addItem(apiProducts.items[1]);
 
 console.log('ITEMS:', cart.getItems());
 console.log('COUNT:', cart.getCount());
 console.log('TOTAL:', cart.getTotalPrice());
 
-cart.removeItem('1');
+cart.removeItem(apiProducts.items[0].id);
 console.log('AFTER REMOVE:', cart.getItems());
 
 cart.clear();
 console.log('AFTER CLEAR:', cart.getItems());
+
 
 // Тест Buyer
 console.log('--- BUYER ---');

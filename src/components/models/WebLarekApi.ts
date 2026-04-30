@@ -1,4 +1,4 @@
-import { IApi, IProductResponse } from "../../../types";
+import { IApi, IProductResponse, IOrderRequest, IOrderResponse } from "../../types";
 
 export class WebLarekApi {
   private api: IApi;
@@ -10,4 +10,8 @@ export class WebLarekApi {
   getProducts(): Promise<IProductResponse> {
     return this.api.get<IProductResponse>('/product/');
   }
+
+  createOrder(data: IOrderRequest): Promise<IOrderResponse> {
+  return this.api.post<IOrderResponse>('/order/', data);
+}
 }
