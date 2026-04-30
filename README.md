@@ -125,23 +125,23 @@ interface IProduct {
 `price: number | null` — цена товара, может отсутствовать
 
 ### Тип способа оплаты (TPayment)
-`type TPayment = 'card' | 'cash';`
+`type TPayment = 'online' | 'cash';`
 Определяет доступные способы оплаты.
 
 ### Интерфейс покупателя (IBuyer)
 
 ```ts
 interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | null;
   email: string;
   phone: string;
   address: string;
 }
 ```
-Описывает данные пользователя, необходимые для оформления заказа.
+Описывает данные пользователя, вводимые при оформлении заказа.
 
 Поля:
-`payment: TPayment` — выбранный способ оплаты  
+`payment: TPayment | null` — выбранный способ оплаты  
 `email: string` — электронная почта покупателя  
 `phone: string` — номер телефона покупателя  
 `address: string` — адрес доставки
@@ -214,3 +214,17 @@ interface IBuyer {
 Для отправки заказа используются типы:
 - `IOrderRequest` — данные заказа
 - `IOrderResponse` — ответ сервера
+
+### Интерфейс заказа (IOrderRequest)
+
+```ts
+interface IOrderRequest extends IBuyer {
+  payment: TPayment;
+  items: string[];
+  total: number;
+}
+```
+
+Поля:
+`items: string[]` — массив id товаров
+`total: number` — итоговая сумма заказа

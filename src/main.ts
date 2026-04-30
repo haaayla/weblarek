@@ -56,7 +56,7 @@ console.log('DATA:', buyer.getData());
 console.log('VALIDATION:', buyer.validate());
 
 buyer.setData({
-  payment: 'card',
+  payment: 'online',
   phone: '+79999999999',
   address: 'Москва'
 });

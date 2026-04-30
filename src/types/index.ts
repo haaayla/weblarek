@@ -16,7 +16,7 @@ export interface IProduct {
 }
 
 // Способ оплаты
-export type TPayment = 'card' | 'cash'
+export type TPayment = 'online' | 'cash';
 
 // Покупатель
 export interface IBuyer {
@@ -36,12 +36,10 @@ export interface IProductResponse {
 }
 
 // Данные для отправки заказа
-export interface IOrderRequest {
+export interface IOrderRequest extends IBuyer {
   payment: TPayment;
-  email: string;
-  phone: string;
-  address: string;
   items: string[];
+  total: number;
 }
 
 export interface IOrderResponse {
