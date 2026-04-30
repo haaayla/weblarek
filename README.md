@@ -208,3 +208,9 @@ interface IBuyer {
 Методы класса:
 `getProducts(): Promise<IProductResponse>`  
 Выполняет GET-запрос на эндпоинт `/product/` и возвращает объект с массивом товаров.
+`createOrder(data: IOrderRequest): Promise<IOrderResponse>`  
+Отправляет данные заказа на эндпоинт `/order/` с помощью POST-запроса и возвращает ответ сервера с информацией о заказе.
+
+Для отправки заказа используются типы:
+- `IOrderRequest` — данные заказа
+- `IOrderResponse` — ответ сервера
